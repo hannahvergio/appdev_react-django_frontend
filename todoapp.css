@@ -1,0 +1,112 @@
+body {
+    margin: 0;
+    padding-top: 80px; /* Adjust this based on your header height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+    text-align: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #070707;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed; /* Makes it always stay on top */
+    top: 0; /* Ensures it starts at the very top */
+    left: 0;
+    width: 100%; /* Makes it span the full width */
+    z-index: 1000; /* Ensures it stays above other elements */
+}
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between logo and text */
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    white-space: nowrap; /* Prevents text from wrapping */
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 0;
+}
+
+.nav-menu li {
+    display: flex;
+}
+
+.nav-menu li a {
+    padding: 15px 20px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    background: #222;
+    border-radius: 8px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.nav-menu li a:hover {
+    background-color: #72252c;
+    transform: scale(1.05);
+}
+
+.hamburger {
+    display: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: white;
+    padding: 10px;
+    background: none;
+    border: none;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: block; 
+    }
+
+    .nav-menu {
+        display: none; 
+        flex-direction: column;
+        background-color: #222;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .nav-menu li {
+        display: block;
+        padding: 10px 0;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+}

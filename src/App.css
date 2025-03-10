@@ -1,0 +1,58 @@
+/* Light Mode (Default) */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f9fa;
+  color: black; /* Default text color */
+}
+
+/* Dark Mode */
+body.dark {
+  background-color: #121212;
+  color: white; /* Ensure text turns white in dark mode */
+}
+
+/* Ensure buttons and inputs remain readable */
+button {
+  padding: 10px;
+  margin: 5px;
+  border: none;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+input {
+  padding: 10px;
+  margin: 5px;
+  background: white;
+  color: black;
+}
+
+body.dark input {
+  background: #333;
+  color: white; /* Adjust input text color */
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+}
+
+/* Completed task (with strikethrough in both modes) */
+.completed {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
