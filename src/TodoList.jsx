@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function TodoList() {
     const [tasks, setTasks] = useState([]);
@@ -7,26 +7,60 @@ export default function TodoList() {
     const [editingText, setEditingText] = useState("");
     const [filter, setFilter] = useState("all");
 
-    // Add a new task
+    // Fetch tasks from Django API when the component loads
+    useEffect(() => {
+        fetch("http://127.0.0.1:8000/api/tasks/")
+            .then(response => response.json())
+            .then(data => setTasks(data))
+            .catch(error => console.error("Error fetching tasks:", error));
+    }, []);
+
+    // Add new task
     const addTask = () => {
         if (task.trim() === "") return;
-        setTasks([...tasks, { text: task, completed: false }]);
+
+        fetch("http://127.0.0.1:8000/api/tasks/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: task, completed: false })
+        })
+        .then(response => response.json())
+        .then(newTask => setTasks([...tasks, newTask]))
+        .catch(error => console.error("Error adding task:", error));
+
         setTask("");
     };
 
-    // Remove a task
+    // Remove task
     const removeTask = (index) => {
-        setTasks(tasks.filter((_, i) => i !== index));
+        const taskToDelete = tasks[index];
+
+        fetch(`http://127.0.0.1:8000/api/tasks/${taskToDelete.id}/`, {
+            method: "DELETE"
+        })
+        .then(() => setTasks(tasks.filter((_, i) => i !== index)))
+        .catch(error => console.error("Error deleting task:", error));
     };
 
     // Toggle completion
     const toggleCompletion = (index) => {
-        const updatedTasks = [...tasks];
-        updatedTasks[index].completed = !updatedTasks[index].completed;
-        setTasks(updatedTasks);
+        const updatedTask = { ...tasks[index], completed: !tasks[index].completed };
+
+        fetch(`http://127.0.0.1:8000/api/tasks/${updatedTask.id}/`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedTask)
+        })
+        .then(response => response.json())
+        .then(updated => {
+            const updatedTasks = [...tasks];
+            updatedTasks[index] = updated;
+            setTasks(updatedTasks);
+        })
+        .catch(error => console.error("Error updating task:", error));
     };
 
-    // Start editing a task
+    // Start editing
     const startEditing = (index) => {
         setEditingIndex(index);
         setEditingText(tasks[index].text);
@@ -34,10 +68,21 @@ export default function TodoList() {
 
     // Save edited task
     const saveEdit = (index) => {
-        const updatedTasks = [...tasks];
-        updatedTasks[index].text = editingText;
-        setTasks(updatedTasks);
-        setEditingIndex(null);
+        const updatedTask = { ...tasks[index], text: editingText };
+
+        fetch(`http://127.0.0.1:8000/api/tasks/${updatedTask.id}/`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedTask)
+        })
+        .then(response => response.json())
+        .then(updated => {
+            const updatedTasks = [...tasks];
+            updatedTasks[index] = updated;
+            setTasks(updatedTasks);
+            setEditingIndex(null);
+        })
+        .catch(error => console.error("Error editing task:", error));
     };
 
     // Filter tasks

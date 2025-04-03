@@ -1,4 +1,4 @@
-/* Light Mode (Default) */
+
 body {
   font-family: Arial, sans-serif;
   display: flex;
@@ -6,16 +6,16 @@ body {
   align-items: center;
   height: 100vh;
   background-color: #f8f9fa;
-  color: black; /* Default text color */
+  color: black; 
 }
 
 /* Dark Mode */
 body.dark {
   background-color: #121212;
-  color: white; /* Ensure text turns white in dark mode */
+  color: white; 
 }
 
-/* Ensure buttons and inputs remain readable */
+
 button {
   padding: 10px;
   margin: 5px;
@@ -39,7 +39,7 @@ input {
 
 body.dark input {
   background: #333;
-  color: white; /* Adjust input text color */
+  color: white; 
 }
 
 ul {
@@ -51,7 +51,7 @@ li {
   margin: 10px 0;
 }
 
-/* Completed task (with strikethrough in both modes) */
+
 .completed {
   text-decoration: line-through;
   opacity: 0.7;
