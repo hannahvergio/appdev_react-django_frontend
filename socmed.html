@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Hannahdulse_ Social Media</title>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="hannahvergio.png" alt="Logo" class="logo">
+            <span class="logo-text">hvergio</span>
+        </div>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="socmed.html">Contact</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="social-container">
+            <div class="contact-section">
+                <h2>Send Me An Email!</h2>
+                <form action="https://formspree.io/f/xqaergjn" method="POST">
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="message" placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
