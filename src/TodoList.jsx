@@ -6,47 +6,50 @@ export default function TodoList() {
     const [editingIndex, setEditingIndex] = useState(null);
     const [editingText, setEditingText] = useState("");
     const [filter, setFilter] = useState("all");
+    const [error, setError] = useState(null);
 
-    // Fetch tasks from Django API when the component loads
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/tasks/")
+        fetch("https://appdev-react-django-backend.onrender.com/api/tasks/")
             .then(response => response.json())
             .then(data => setTasks(data))
-            .catch(error => console.error("Error fetching tasks:", error));
+            .catch(error => {
+                setError("Error fetching tasks");
+                console.error("Error fetching tasks:", error);
+            });
     }, []);
 
-    // Add new task
     const addTask = () => {
         if (task.trim() === "") return;
 
-        fetch("http://127.0.0.1:8000/api/tasks/", {
+        fetch("https://appdev-react-django-backend.onrender.com/api/tasks/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text: task, completed: false })
         })
         .then(response => response.json())
-        .then(newTask => setTasks([...tasks, newTask]))
-        .catch(error => console.error("Error adding task:", error));
+        .then(newTask => setTasks(prevTasks => [...prevTasks, newTask]))
+        .catch(error => {
+            setError("Error adding task");
+            console.error("Error adding task:", error);
+        });
 
         setTask("");
     };
 
-    // Remove task
     const removeTask = (index) => {
         const taskToDelete = tasks[index];
 
-        fetch(`http://127.0.0.1:8000/api/tasks/${taskToDelete.id}/`, {
+        fetch(`https://appdev-react-django-backend.onrender.com/api/tasks/${taskToDelete.id}/`, {
             method: "DELETE"
         })
         .then(() => setTasks(tasks.filter((_, i) => i !== index)))
         .catch(error => console.error("Error deleting task:", error));
     };
 
-    // Toggle completion
     const toggleCompletion = (index) => {
         const updatedTask = { ...tasks[index], completed: !tasks[index].completed };
 
-        fetch(`http://127.0.0.1:8000/api/tasks/${updatedTask.id}/`, {
+        fetch(`https://appdev-react-django-backend.onrender.com/api/tasks/${updatedTask.id}/`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updatedTask)
@@ -60,17 +63,15 @@ export default function TodoList() {
         .catch(error => console.error("Error updating task:", error));
     };
 
-    // Start editing
     const startEditing = (index) => {
         setEditingIndex(index);
         setEditingText(tasks[index].text);
     };
 
-    // Save edited task
     const saveEdit = (index) => {
         const updatedTask = { ...tasks[index], text: editingText };
 
-        fetch(`http://127.0.0.1:8000/api/tasks/${updatedTask.id}/`, {
+        fetch(`https://appdev-react-django-backend.onrender.com/api/tasks/${updatedTask.id}/`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updatedTask)
@@ -85,7 +86,6 @@ export default function TodoList() {
         .catch(error => console.error("Error editing task:", error));
     };
 
-    // Filter tasks
     const filteredTasks = tasks.filter((t) => {
         if (filter === "completed") return t.completed;
         if (filter === "pending") return !t.completed;
@@ -94,7 +94,7 @@ export default function TodoList() {
 
     return (
         <div className="todo-container">
-            {/* Input & Add Task */}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <div>
                 <input
                     type="text"
@@ -105,14 +105,12 @@ export default function TodoList() {
                 <button onClick={addTask}>Add Task</button>
             </div>
 
-            {/* Filter Buttons */}
             <div>
                 <button onClick={() => setFilter("all")}>All</button>
                 <button onClick={() => setFilter("completed")}>Completed</button>
                 <button onClick={() => setFilter("pending")}>Pending</button>
             </div>
 
-            {/* Task List */}
             <ul>
                 {filteredTasks.map((t, index) => (
                     <li key={index} style={{ textDecoration: t.completed ? "line-through" : "none" }}>
